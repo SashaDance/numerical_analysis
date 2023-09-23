@@ -45,6 +45,30 @@ class Matrix:
                 raise ValueError(
                     'Invalid matrix: Rows have inconsistent lengths')
 
+    def add_row(self, row) -> None:
+        if isinstance(row, list):
+            if len(row) == self.m:
+                self.matrix.append(row)
+            else:
+                raise ValueError(
+                    f'Invalid length of row: len(row) should be {self.m}')
+        else:
+            raise TypeError(
+                'Appending row should be a list of float'
+            )
+    def add_column(self, column) -> None:
+        if isinstance(column, list):
+            if len(column) == self.n:
+                for i in range(self.n):
+                    self.matrix[i].append(column[i])
+            else:
+                raise ValueError(
+                    f'Invalid length of column: len(column) should be {self.m}')
+        else:
+            raise TypeError(
+                'Appending column should be a list of float'
+            )
+
     @staticmethod
     def fill_zeros(n: int, m: int):
 

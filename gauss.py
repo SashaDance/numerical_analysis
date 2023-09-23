@@ -1,4 +1,5 @@
 import numpy as np
+from matrix import Matrix
 
 
 def gauss(n: int, matrix: list[list]) -> list:
@@ -50,15 +51,15 @@ def gauss(n: int, matrix: list[list]) -> list:
 
 
 def check_huge_system(n: int = 1024) -> None:
-    matrix = np.random.uniform(size=n * n).reshape(n, n)
+    matrix = Matrix.create_random_matrix(n, n)
 
-    row = list(range(1, n + 1))
-    right_sight = np.matmul(matrix, row)
-    right_sight = right_sight.reshape(-1, 1)
+    column = Matrix(matrix=[[i + 1] for i in range(n)])
+    right_sight = matrix * column
 
-    matrix = np.append(matrix, right_sight, axis=1).tolist()
+    right_sight = [elem[0] for elem in right_sight.matrix]
+    matrix.add_column(right_sight)
 
-    print(gauss(1024, matrix))
+    print(gauss(1024, matrix.matrix))
 
 
 # check_huge_system()
