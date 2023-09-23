@@ -49,6 +49,7 @@ class Matrix:
         if isinstance(row, list):
             if len(row) == self.m:
                 self.matrix.append(row)
+                self.n += 1
             else:
                 raise ValueError(
                     f'Invalid length of row: len(row) should be {self.m}')
@@ -61,6 +62,7 @@ class Matrix:
             if len(column) == self.n:
                 for i in range(self.n):
                     self.matrix[i].append(column[i])
+                    self.m += 1
             else:
                 raise ValueError(
                     f'Invalid length of column: len(column) should be {self.m}')
