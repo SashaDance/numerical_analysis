@@ -1,3 +1,5 @@
+import random
+
 
 class Matrix:
     def __init__(self, n=None, m=None, matrix=None):
@@ -12,6 +14,9 @@ class Matrix:
             self.m = m
             self.matrix = self.fill_zeros(n, m)
 
+    def __getitem__(self, item):
+        return self.matrix[item]
+
     def __mul__(self, other):
         if isinstance(other, Matrix):
             if self.m == other.n:
@@ -19,8 +24,7 @@ class Matrix:
                 for i in range(self.n):
                     for j in range(other.m):
                         for k in range(self.m):
-                            result.matrix[i][j] += (self.matrix[i][k]
-                                                    * other.matrix[k][j])
+                            result[i][j] += self.matrix[i][k] * other[k][j]
             else:
                 raise ValueError(
                     'Unsupported matrices shapes for multiplication')
@@ -31,7 +35,6 @@ class Matrix:
 
     def __str__(self):
         return '\n'.join(" ".join(map(str, row)) for row in self.matrix)
-
 
     def check_matrix(self) -> None:
         m = len(self.matrix[0])
@@ -46,6 +49,15 @@ class Matrix:
     def fill_zeros(n: int, m: int):
 
         matrix = [[0 for j in range(m)] for i in range(n)]
+        return matrix
+
+    @staticmethod
+    def create_random_matrix(n: int, m: int, segment: tuple = (0, 1)):
+        matrix = Matrix(n, m)
+        for i in range(n):
+            for j in range(m):
+                matrix[i][j] = random.uniform(segment[0], segment[1])
+
         return matrix
 
 
