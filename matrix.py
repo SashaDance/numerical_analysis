@@ -86,6 +86,13 @@ class Matrix:
 
         return matrix
 
+    @staticmethod
+    def identity_matrix(n):
+        identity = Matrix(n, n)
+        for i in range(n):
+            identity[i][i] = 1
+        return identity
+
 
 # matr_1 = Matrix(matrix=[[1, 2, 2], [5, 3, 1]])
 # matr_2 = Matrix(matrix=[[1, 2], [1, 1], [1, 1]])
