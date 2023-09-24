@@ -17,6 +17,9 @@ class Matrix:
     def __getitem__(self, item):
         return self.matrix[item]
 
+    def __setitem__(self, key, value):
+        self.matrix[key] = value
+
     def __mul__(self, other):
         if isinstance(other, Matrix):
             if self.m == other.n:
@@ -70,6 +73,9 @@ class Matrix:
             raise TypeError(
                 'Appending column should be a list of float'
             )
+    @staticmethod
+    def transpose(matrix):
+        pass
 
     @staticmethod
     def fill_zeros(n: int, m: int):
@@ -87,15 +93,15 @@ class Matrix:
         return matrix
 
     @staticmethod
-    def identity_matrix(n):
+    def identity_matrix(n: int):
         identity = Matrix(n, n)
         for i in range(n):
             identity[i][i] = 1
         return identity
 
 
-# matr_1 = Matrix(matrix=[[1, 2, 2], [5, 3, 1]])
-# matr_2 = Matrix(matrix=[[1, 2], [1, 1], [1, 1]])
-matr_1 = Matrix(matrix=[[1, 2, 3]])
-matr_2 = Matrix(matrix=[[1], [1], [1]])
-print(matr_1 * matr_2)
+# # matr_1 = Matrix(matrix=[[1, 2, 2], [5, 3, 1]])
+# # matr_2 = Matrix(matrix=[[1, 2], [1, 1], [1, 1]])
+# matr_1 = Matrix(matrix=[[1, 2, 3]])
+# matr_2 = Matrix(matrix=[[1], [1], [1]])
+# print(matr_1 * matr_2)
