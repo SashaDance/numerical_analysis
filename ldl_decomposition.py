@@ -43,9 +43,6 @@ def ldl_decom(matrix: list[list]) -> list:
             cum_sum = cum_sum + solution[j] * S[k][j]
         solution[k] = (y[k] - cum_sum) / S[k][k]
 
-    print(S)
-    print(D)
-    print(y)
     return solution
 
 

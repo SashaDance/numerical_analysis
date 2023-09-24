@@ -1,0 +1,58 @@
+from matrix import Matrix
+from copy import deepcopy
+import math
+
+def find_max_nondiag_elem(matrix: Matrix) -> tuple[float, int, int]:
+    max_elem = -1
+    n = matrix.n
+    p = q = 0
+    for i in range(n - 1):
+        for j in range(i + 1, n):
+            if abs(matrix[i][j]) > max_elem:
+                max_elem = abs(matrix[i][j])
+                p = i
+                q = j
+    return max_elem, p, q
+
+
+def jacobi(matrix: Matrix, tolerance: float = 10e-10) -> list:
+
+    matrix = deepcopy(matrix)
+
+    n = matrix.n
+    max_elem, p, q = find_max_nondiag_elem(matrix)
+
+    # rotation loop
+    while max_elem > tolerance:
+        if matrix[p][p] != matrix[q][q]:
+            phi = math.atan(matrix[p][q] / (matrix[p][p] - matrix[q][q])) / 2
+        else:
+            phi = math.pi / 4
+
+        # building rotation matrix
+        U = Matrix.identity_matrix(n)
+        U[p][p] = math.cos(phi)
+        U[p][q] = -1 * math.sin(phi)
+        U[q][p] = math.sin(phi)
+        U[q][q] = math.cos(phi)
+
+        # making rotation
+        matrix = Matrix.transpose(U) * matrix * U
+
+        max_elem, p, q = find_max_nondiag_elem(matrix)
+
+    eigenvalues = [matrix[i][i] for i in range(n)]
+
+    return eigenvalues
+
+
+
+matrix = [
+    [-1, 3, 2],
+    [3, -3, 3],
+    [2, 3, -3]
+]
+
+m = Matrix(matrix=matrix)
+
+print(jacobi(m))
