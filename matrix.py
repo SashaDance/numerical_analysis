@@ -1,5 +1,5 @@
 import random
-
+from typing_extensions import Self
 
 class Matrix:
     def __init__(self, n=None, m=None, matrix=None):
@@ -20,7 +20,7 @@ class Matrix:
     def __setitem__(self, key, value):
         self.matrix[key] = value
 
-    def __mul__(self, other):
+    def __mul__(self, other: Self) -> Self:
         if isinstance(other, Matrix):
             if self.m == other.n:
                 result = Matrix(self.n, other.m)
@@ -74,17 +74,24 @@ class Matrix:
                 'Appending column should be a list of float'
             )
     @staticmethod
-    def transpose(matrix):
-        pass
+    def transpose(matrix: Self) -> Self:
+        n = matrix.n
+        m = matrix.m
+        result = Matrix(m, n)
+        for i in range(n):
+            for j in range(m):
+                result[j][i] = matrix[i][j]
+
+        return result
 
     @staticmethod
-    def fill_zeros(n: int, m: int):
+    def fill_zeros(n: int, m: int) -> Self:
 
         matrix = [[0 for j in range(m)] for i in range(n)]
         return matrix
 
     @staticmethod
-    def create_random_matrix(n: int, m: int, segment: tuple = (0, 1)):
+    def create_random_matrix(n: int, m: int, segment: tuple = (0, 1)) -> Self:
         matrix = Matrix(n, m)
         for i in range(n):
             for j in range(m):

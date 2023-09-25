@@ -59,10 +59,10 @@ def check_huge_system(n: int = 1024) -> None:
     right_sight = [elem[0] for elem in right_sight.matrix]
     matrix.add_column(right_sight)
 
-    print(gauss(1024, matrix.matrix))
+    print(gauss(1024, matrix))
 
 
-# check_huge_system()
+check_huge_system()
 
 matrix = [
     [-1, 3, 2],

@@ -2,6 +2,7 @@ from matrix import Matrix
 from copy import deepcopy
 import math
 
+
 def find_max_nondiag_elem(matrix: Matrix) -> tuple[float, int, int]:
     max_elem = -1
     n = matrix.n
@@ -15,12 +16,13 @@ def find_max_nondiag_elem(matrix: Matrix) -> tuple[float, int, int]:
     return max_elem, p, q
 
 
-def jacobi(matrix: Matrix, tolerance: float = 10e-10) -> list:
-
+def jacobi(matrix: Matrix, tolerance: float = 10e-10) -> (list, Matrix):
     matrix = deepcopy(matrix)
 
     n = matrix.n
     max_elem, p, q = find_max_nondiag_elem(matrix)
+
+    eigenvectors = Matrix.identity_matrix(n)
 
     # rotation loop
     while max_elem > tolerance:
@@ -41,11 +43,25 @@ def jacobi(matrix: Matrix, tolerance: float = 10e-10) -> list:
 
         max_elem, p, q = find_max_nondiag_elem(matrix)
 
+        eigenvectors = eigenvectors * U
+
     eigenvalues = [matrix[i][i] for i in range(n)]
 
-    return eigenvalues
+    return eigenvalues, eigenvectors
 
+def cond(matrix: Matrix) -> float:
+    eigenvalues = jacobi(matrix)[0]
 
+    max_eigenvalue = -1
+    min_eigenvalue = 10e10
+
+    for eigenvalue in eigenvalues:
+        max_eigenvalue = max(max_eigenvalue, abs(eigenvalue))
+        min_eigenvalue = min(min_eigenvalue, abs(eigenvalue))
+
+    cond = max_eigenvalue / min_eigenvalue
+
+    return cond
 
 matrix = [
     [-1, 3, 2],
@@ -55,4 +71,6 @@ matrix = [
 
 m = Matrix(matrix=matrix)
 
-print(jacobi(m))
+print(jacobi(m)[0])
+print(jacobi(m)[1])
+print(cond(m))
