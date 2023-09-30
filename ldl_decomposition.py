@@ -1,10 +1,10 @@
 import numpy as np
+from matrix import Matrix
 
-
-def ldl_decom(matrix: list[list]) -> list:
-    n = len(matrix)
-    S = np.zeros((n, n))
-    D = np.zeros((n, n))
+def ldl_decom(matrix: Matrix) -> list:
+    n = matrix.n
+    S = Matrix(n, n)
+    D = Matrix(n, n)
 
     for i in range(n):
         # calculating element D[i][i] and S[i][i]
@@ -23,14 +23,16 @@ def ldl_decom(matrix: list[list]) -> list:
 
     # finding the solution
 
+    S_tranposed = Matrix.transpose(S)
+
     y = [0 for i in range(n)]
-    y[0] = matrix[0][n] / S.T[0][0]
+    y[0] = matrix[0][n] / S_tranposed[0][0]
 
     for i in range(1, n):
         cum_sum = 0
         for k in range(i):
-            cum_sum += S.T[i][k] * y[k]
-        y[i] = (matrix[i][n] - cum_sum) / S.T[i][i]
+            cum_sum += Matrix.transpose(S)[i][k] * y[k]
+        y[i] = (matrix[i][n] - cum_sum) / S_tranposed[i][i]
 
     y = [D[i][i] * y[i] for i in range(n)]
 
@@ -52,4 +54,5 @@ matrix = [
     [2, 3, -3, 6]
 ]
 
+matrix = Matrix(matrix=matrix)
 print(ldl_decom(matrix))
