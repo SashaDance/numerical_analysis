@@ -20,19 +20,29 @@ class Matrix:
     def __setitem__(self, key, value):
         self.matrix[key] = value
 
-    def __mul__(self, other: Self) -> Self:
-        if isinstance(other, Matrix):
-            if self.m == other.n:
-                result = Matrix(self.n, other.m)
+    def __mul__(self, multiplier: Self | float | int) -> Self:
+
+        if isinstance(multiplier, Matrix):
+            result = Matrix(self.n, multiplier.m)
+            if self.m == multiplier.n:
                 for i in range(self.n):
-                    for j in range(other.m):
+                    for j in range(multiplier.m):
                         for k in range(self.m):
-                            result[i][j] += self.matrix[i][k] * other[k][j]
+                            result[i][j] += self.matrix[i][k] * multiplier[k][j]
             else:
                 raise ValueError(
-                    'Unsupported matrices shapes for multiplication')
+                    'Unsupported matrices shapes for multiplication'
+                )
+
+        elif isinstance(multiplier, (int, float)):
+            result = Matrix(self.n, self.m)
+            for i in range(self.n):
+                for j in range(self.m):
+                    result[i][j] = self.matrix[i][j] * multiplier
         else:
-            raise TypeError('Unsupported operand type: Matrix expected')
+            raise TypeError(
+                'Unsupported operand type: Matrix or float or int expected'
+            )
 
         return result
 
@@ -107,8 +117,9 @@ class Matrix:
         return identity
 
 
+
 # # matr_1 = Matrix(matrix=[[1, 2, 2], [5, 3, 1]])
-# # matr_2 = Matrix(matrix=[[1, 2], [1, 1], [1, 1]])
+# matr_2 = Matrix(matrix=[[1, 2], [1, 1], [1, 1]])
 # matr_1 = Matrix(matrix=[[1, 2, 3]])
 # matr_2 = Matrix(matrix=[[1], [1], [1]])
-# print(matr_1 * matr_2)
+# print(matr_2 * 2)

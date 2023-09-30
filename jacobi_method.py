@@ -16,7 +16,7 @@ def find_max_nondiag_elem(matrix: Matrix) -> tuple[float, int, int]:
     return max_elem, p, q
 
 
-def jacobi(matrix: Matrix, tolerance: float = 10e-10) -> (list, Matrix):
+def jacobi(matrix: Matrix, tolerance: float = 1e-10) -> (list, Matrix):
     matrix = deepcopy(matrix)
 
     n = matrix.n
