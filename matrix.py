@@ -58,7 +58,7 @@ class Matrix:
                 raise ValueError(
                     'Invalid matrix: Rows have inconsistent lengths')
 
-    def add_row(self, row) -> None:
+    def add_row(self, row: list) -> None:
         if isinstance(row, list):
             if len(row) == self.m:
                 self.matrix.append(row)
@@ -70,7 +70,7 @@ class Matrix:
             raise TypeError(
                 'Appending row should be a list of float'
             )
-    def add_column(self, column) -> None:
+    def add_column(self, column: list) -> None:
         if isinstance(column, list):
             if len(column) == self.n:
                 for i in range(self.n):

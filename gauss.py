@@ -1,8 +1,7 @@
-import numpy as np
 from matrix import Matrix
 
 
-def gauss(n: int, matrix: list[list]) -> list:
+def gauss(n: int, matrix: Matrix) -> list:
     solution = [0 for i in range(n)]
     # straight Gauss
     # finding the greatest element in i'th column
@@ -62,12 +61,12 @@ def check_huge_system(n: int = 1024) -> None:
     print(gauss(1024, matrix))
 
 
-check_huge_system()
-
-matrix = [
-    [-1, 3, 2],
-    [3, -3, 3],
-    [2, 3, -3]
-]
-
-print(np.linalg.cond(matrix))
+# check_huge_system()
+#
+# matrix = [
+#     [-1, 3, 2],
+#     [3, -3, 3],
+#     [2, 3, -3]
+# ]
+#
+# print(np.linalg.cond(matrix))
