@@ -27,7 +27,7 @@ def jacobi(matrix: Matrix, tolerance: float = 1e-10) -> (list, Matrix):
     # rotation loop
     while max_elem > tolerance:
         if matrix[p][p] != matrix[q][q]:
-            phi = math.atan(matrix[p][q] / (matrix[p][p] - matrix[q][q])) / 2
+            phi = math.atan(2 * matrix[p][q] / (matrix[p][p] - matrix[q][q])) / 2
         else:
             phi = math.pi / 4
 
