@@ -21,21 +21,21 @@ def jacobian(vector: Matrix) -> Matrix:
 
 
 def calculate_diff(x_1: Matrix, x_2: Matrix) -> float:
-    if x_1.n == x_2.n:
-        n = x_1.n
-        result = 0
-        for i in range(n):
-            result += (x_1[i] - x_2[i]) ** 2
-        result = result ** 1 / 2
-    else:
-        raise ValueError('lengths of vectors must be equal')
+
+    x = x_1 - x_2
+    result = 0
+
+    for elem in x[0]:
+        result += elem ** 2
+
+    result = result ** 1/2
 
     return result
 
 
-def newton_method(x_0: Matrix, tolerance: float = 1e-6) -> list:
+def newton_method(x_0: Matrix, tolerance: float = 1e-10) -> list:
     x_prev = x_0
-    x_next = Matrix(0, x_0.n)
+    x_next = Matrix(1, x_0.n)
     iteration = 0
     while True:
         iteration += 1

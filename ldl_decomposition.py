@@ -49,9 +49,9 @@ def ldl_decom(matrix: Matrix) -> list:
 
 
 matrix = [
-    [-2, 2, -3, -14],
-    [2, -1, 3, 12],
-    [-3, 3, 2, -8]
+    [-1, 3, 2, 2],
+    [3, -3, 3, 9],
+    [2, 3, -3, 6]
 ]
 
 matrix = Matrix(matrix=matrix)

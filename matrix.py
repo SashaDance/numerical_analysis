@@ -57,6 +57,10 @@ class Matrix:
                     result[i][j] = self[i][j] + other[i][j]
         else:
             raise ValueError('Matrices shapes should be the same')
+        return result
+
+    def __sub__(self, other: Self) -> Self:
+        return self + other * (-1)
 
     def __str__(self):
         return '\n'.join(" ".join(map(str, row)) for row in self.matrix)
