@@ -14,6 +14,9 @@ class Matrix:
             self.m = m
             self.matrix = self.fill_zeros(n, m)
 
+    def __call__(self):
+        return self.matrix
+
     def __getitem__(self, item):
         return self.matrix[item]
 
@@ -45,6 +48,15 @@ class Matrix:
             )
 
         return result
+
+    def __add__(self, other: Self) -> Self:
+        if self.m == other.m and self.n == other.n:
+            result = Matrix(self.n, self.m)
+            for i in range(self.n):
+                for j in range(self.m):
+                    result[i][j] = self[i][j] + other[i][j]
+        else:
+            raise ValueError('Matrices shapes should be the same')
 
     def __str__(self):
         return '\n'.join(" ".join(map(str, row)) for row in self.matrix)
@@ -118,7 +130,7 @@ class Matrix:
 
 
 
-# # matr_1 = Matrix(matrix=[[1, 2, 2], [5, 3, 1]])
+# matr_1 = Matrix(matrix=[[1, 2, 2], [5, 3, 1]])
 # matr_2 = Matrix(matrix=[[1, 2], [1, 1], [1, 1]])
 # matr_1 = Matrix(matrix=[[1, 2, 3]])
 # matr_2 = Matrix(matrix=[[1], [1], [1]])

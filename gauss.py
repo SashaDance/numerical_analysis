@@ -1,8 +1,8 @@
 from matrix import Matrix
+import numpy as np
 
-
-def gauss(n: int, matrix: Matrix) -> list:
-    solution = [0 for i in range(n)]
+def gauss(n: int, matrix: Matrix) -> Matrix:
+    solution = Matrix(0, n)
     # straight Gauss
     # finding the greatest element in i'th column
     for i in range(n):
@@ -38,13 +38,13 @@ def gauss(n: int, matrix: Matrix) -> list:
                 matrix[k][j] = matrix[k][j] - matrix[i][j] * h
 
     # backwards Gauss
-    solution[n - 1] = matrix[n - 1][n]
+    solution[0][n - 1] = matrix[n - 1][n]
     for i in range(n - 1):
         k = n - i - 2
         cum_sum = 0
         for j in range(k + 1, n):
-            cum_sum = cum_sum + solution[j] * matrix[k][j]
-        solution[k] = matrix[k][n] - cum_sum
+            cum_sum = cum_sum + solution[0][j] * matrix[k][j]
+        solution[0][k] = matrix[k][n] - cum_sum
 
     return solution
 
@@ -61,6 +61,7 @@ def check_huge_system(n: int = 1024) -> None:
     print(gauss(1024, matrix))
 
 
+# print('1024 x 1024 system:')
 # check_huge_system()
 #
 # matrix = [
@@ -69,4 +70,9 @@ def check_huge_system(n: int = 1024) -> None:
 #     [2, 3, -3]
 # ]
 #
-# print(np.linalg.cond(matrix))
+# matrix_instance = Matrix(matrix=matrix)
+# right_sight = [2, 9, 6]
+# matrix_instance.add_column(right_sight)
+#
+# print('3 x 3 system')
+# print(gauss(3, matrix_instance))

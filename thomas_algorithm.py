@@ -40,4 +40,5 @@ f = [37, 17, 71, 51]
 kappa_1 = -9
 kappa_2 = -9
 
+print('Solution')
 print(thomas_algorithm(kappa_1, kappa_2, a, b, c, f))

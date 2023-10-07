@@ -71,6 +71,9 @@ matrix = [
 
 m = Matrix(matrix=matrix)
 
+print('Eigenvalues')
 print(jacobi(m)[0])
+print('Eigenvectors')
 print(jacobi(m)[1])
+print('Cond')
 print(cond(m))
