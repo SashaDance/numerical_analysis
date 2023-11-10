@@ -33,7 +33,7 @@ def calculate_diff(x_1: Matrix, x_2: Matrix) -> float:
     return result
 
 
-def newton_method(x_0: Matrix, tolerance: float = 1e-10) -> list:
+def newton_method(x_0: Matrix, tolerance: float = 1e-6) -> list:
     x_prev = x_0
     x_next = Matrix(1, x_0.n)
     iteration = 0
