@@ -67,7 +67,7 @@ def spectral_density(X: np.ndarray[np.complex128]) -> np.ndarray[np.float64]:
 
 def plot_results(x: np.ndarray[np.float64], freq: float = 1000,
                  n: int = 9) -> None:
-    N = n ** 2
+    N = 2 ** n
 
     X_dft = fourier_transform(x, use_fft=True)
     X_fft = fourier_transform(x, use_fft=True)
@@ -81,14 +81,12 @@ def plot_results(x: np.ndarray[np.float64], freq: float = 1000,
     )
     axs[0].set_title('Implemented DFT')
 
-    fig, axs = plt.subplots(1, 3)
     axs[1].plot(
         freq * np.arange(0, N // 2) / N,
         spectral_density(X_fft)[: N // 2]
     )
     axs[1].set_title('Implemented FFT')
 
-    fig, axs = plt.subplots(1, 3)
     axs[2].plot(
         freq * np.arange(0, N // 2) / N,
         spectral_density(X_fft_scipy)[: N // 2]
@@ -97,12 +95,12 @@ def plot_results(x: np.ndarray[np.float64], freq: float = 1000,
 
     plt.show()
 
+if __name__ == '__main__':
+    n = 9
+    N = 2 ** n
+    freq = 1000
 
-n = 9
-N = 2 ** n
-freq = 1000
+    t = np.arange(0, N, 1) / 1000
+    x = tab(t)
 
-t = np.arange(0, N, 1) / 1000
-x = tab(t)
-
-plot_results(x)
+    plot_results(x)
