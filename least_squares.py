@@ -5,6 +5,8 @@ from typing import Callable
 from matrix import Matrix
 from gauss import gauss
 
+import pandas as pd
+
 
 def predict(coefficients: Matrix, x: float) -> float:
     res = 0
@@ -12,6 +14,8 @@ def predict(coefficients: Matrix, x: float) -> float:
         res += coefficients[0][i] * x ** i
 
     return res
+
+
 def least_squares_pol(x: list[float], y: list[float], m: int,
                       visualize: bool = True) -> Matrix:
     """
@@ -50,6 +54,7 @@ def least_squares_pol(x: list[float], y: list[float], m: int,
 
     return solution
 
+
 def function(x: float) -> float:
     return np.arcsin(2 * x - 1)
 
@@ -62,12 +67,49 @@ def tab(func: Callable = function, l: float = 0, r: float = 1,
 
     return x_arr, y_arr
 
+
 def print_results(x: list[float], y: list[float]) -> None:
-    pass
+    lin_least_squares = least_squares_pol(x, y, 1, visualize=True)
+    quad_least_squares = least_squares_pol(x, y, 2, visualize=True)
+    cub_least_squares = least_squares_pol(x, y, 3, visualize=True)
+
+    lin_predictions = [predict(lin_least_squares, x_i) for x_i in x]
+    quad_predictions = [predict(quad_least_squares, x_i) for x_i in x]
+    cub_predictions = [predict(cub_least_squares, x_i) for x_i in x]
+
+    lin_resid = [y_pred - y_i for y_pred, y_i in zip(lin_predictions, y)]
+    quad_resid = [y_pred - y_i for y_pred, y_i in zip(quad_predictions, y)]
+    cub_resid = [y_pred - y_i for y_pred, y_i in zip(cub_predictions, y)]
+
+    data = {
+        'x values': x,
+        'given function values': y,
+        'linear function values': lin_predictions,
+        'quadratic function values': quad_predictions,
+        'cubic function values': cub_predictions,
+        'linear residuals': lin_resid,
+        'quadratic residuals': quad_resid,
+        'cubic residuals': cub_resid
+    }
+
+    # create a DataFrame using the data
+    df = pd.DataFrame(data)
+
+    # calculate sum of residuals
+    sum_resid = df[
+        ['linear residuals', 'quadratic residuals', 'cubic residuals']].sum()
+    df = df.append(sum_resid, ignore_index=True)
+    df = df.fillna('')
+
+    with pd.option_context('display.max_rows', None,
+                           'display.max_columns', None):
+        print(df.to_string(index=False))
 
 
-data = tab()
-x = data[0]
-y = data[1]
+if __name__ == '__main__':
+    data = tab()
+    x = data[0]
+    y = data[1]
 
-print(least_squares_pol(x, y, 3))
+    # print(least_squares_pol(x, y, 3))
+    print_results(x, y)
