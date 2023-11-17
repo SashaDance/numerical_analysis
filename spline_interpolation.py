@@ -5,7 +5,24 @@ from thomas_algorithm import thomas_algorithm
 import matplotlib.pyplot as plt
 from typing import Callable
 
-def spline_interpolation(x: list[float], y: list[float]) -> None:
+def predict(x: float, start: float, end: float, n:int, a: list[float],
+            b: list[float], c: list[float], d: list[float]) -> float:
+    h = (end - start) / n
+
+    if x == end:
+        ind = n - 1
+    else:
+        ind = int(x / h)
+
+    residual = x - ind * h
+    y = (a[ind] + b[ind] * residual
+                   + c[ind] * residual ** 2 + d[ind] * residual ** 3
+    )
+
+    return y
+
+def spline_interpolation(x: list[float], y: list[float],
+                         visualize: bool = False) -> None:
     # initializing
     end = max(x)
     start = min(x)
@@ -49,20 +66,13 @@ def spline_interpolation(x: list[float], y: list[float]) -> None:
     x_sample = np.linspace(start, end, k)
     y_sample = np.zeros(100, dtype=np.float64)
     for i in range(k):
-        if x_sample[i] == end:
-            ind = n - 1
-        else:
-            ind = int(x_sample[i] / h)
+        y_sample[i] = predict(x_sample[i], start, end, n, a, b, c, d)
 
-        residual = x_sample[i] - ind * h
-        y_sample[i] = (a[ind] + b[ind] * residual
-                       + c[ind] * residual ** 2 + d[ind] * residual ** 3
-        )
+    if visualize:
+        plt.scatter(x, y, color='red')
+        plt.plot(x_sample, y_sample)
 
-    plt.scatter(x, y, color='red')
-    plt.plot(x_sample, y_sample)
-
-    plt.show()
+        plt.show()
 
 def function(x: float) -> float:
     return np.arcsin(2 * x - 1)
@@ -76,8 +86,9 @@ def tab(func: Callable = function, l: float = 0, r: float = 1,
 
     return x_arr, y_arr
 
+
 data = tab()
 x = data[0]
 y = data[1]
 
-spline_interpolation(x, y)
+spline_interpolation(x, y, visualize=True)
