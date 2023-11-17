@@ -6,6 +6,12 @@ from matrix import Matrix
 from gauss import gauss
 
 
+def predict(coefficients: Matrix, x: float) -> float:
+    res = 0
+    for i in range(coefficients.m):
+        res += coefficients[0][i] * x ** i
+
+    return res
 def least_squares_pol(x: list[float], y: list[float], m: int,
                       visualize: bool = True) -> Matrix:
     """
@@ -33,24 +39,16 @@ def least_squares_pol(x: list[float], y: list[float], m: int,
 
     solution = gauss(m + 1, matrix)
 
-    def polynomial(x: float) -> float:
-        res = 0
-        for i in range(solution.m):
-            res += solution[0][i] * x ** i
-
-        return res
-
     if visualize:
         plt.scatter(x, y, color='blue', label='Points')
         pol_x = np.linspace(min(x), max(x), 40)
-        pol_y = list(map(polynomial, pol_x))
+        pol_y = [predict(solution, x_i) for x_i in pol_x]
         plt.plot(pol_x, pol_y, color='red', label='interpolation polynomial')
         plt.grid()
         plt.legend()
         plt.show()
 
     return solution
-
 
 def function(x: float) -> float:
     return np.arcsin(2 * x - 1)
@@ -64,9 +62,12 @@ def tab(func: Callable = function, l: float = 0, r: float = 1,
 
     return x_arr, y_arr
 
+def print_results(x: list[float], y: list[float]) -> None:
+    pass
+
 
 data = tab()
 x = data[0]
 y = data[1]
 
-print(least_squares_pol(x, y, 1))
+print(least_squares_pol(x, y, 3))
