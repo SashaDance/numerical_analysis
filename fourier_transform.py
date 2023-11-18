@@ -38,8 +38,8 @@ def fourier_transform(x: np.ndarray[np.float64],
 
         # calculating DFT (using FFT)
         for k in range(1, n + 1):
-            for i in range(0, 2 ** (n - k)):
-                for l in range(0, 2 ** (k - 1)):
+            for i in range(2 ** (n - k)):
+                for l in range(2 ** (k - 1)):
                     index1 = i * 2 ** k + l
                     index2 = index1 + 2 ** (k - 1)
                     x1 = (X_fft[index1] +
@@ -142,7 +142,7 @@ if __name__ == '__main__':
     N = 2 ** n
     freq = 1000
 
-    t = np.arange(0, N, 1) / 1000
+    t = np.arange(0, N, 1) / freq
     x = tab(t)
 
     plot_results(x)

@@ -92,14 +92,14 @@ def tab(func: Callable = function, l: float = 0, r: float = 1,
     return x_arr, y_arr
 
 def print_results() -> None:
-    nums = [10, 25, 125]
+    nums = [10]
     for n in nums:
         start = 0
         end = 1
         data = tab(n=n)
         x = data[0]
         y = data[1]
-        a, b, c, d = spline_interpolation(x, y)
+        a, b, c, d = spline_interpolation(x, y, visualize=True)
         y_pred = [
             predict(x[i], start, end, n - 1, a, b, c, d) for i in range(n)
         ]

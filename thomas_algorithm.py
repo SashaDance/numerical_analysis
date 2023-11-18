@@ -1,5 +1,5 @@
 
-def thomas_algorithm(kappa_1: int, kappa_2: int, a: list,
+def thomas_algorithm(kappa_1: float, kappa_2: float, a: list,
                      b: list, c: list, f: list) -> list:
 
     mu_1 = f[0]
@@ -32,13 +32,14 @@ def thomas_algorithm(kappa_1: int, kappa_2: int, a: list,
     return solution
 
 
-a = [-5, 4]
-b = [-7, 4]
-c = [2, -9]
-f = [37, 17, 71, 51]
+if __name__ == '__main__':
+    a = [-5, 4]
+    b = [-7, 4]
+    c = [2, -9]
+    f = [37, 17, 71, 51]
 
-kappa_1 = -9
-kappa_2 = -9
+    kappa_1 = -9
+    kappa_2 = -9
 
-print('Solution')
-print(thomas_algorithm(kappa_1, kappa_2, a, b, c, f))
+    print('Solution')
+    print(thomas_algorithm(kappa_1, kappa_2, a, b, c, f))
