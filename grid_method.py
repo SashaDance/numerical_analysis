@@ -47,3 +47,45 @@ class GridMethod:
 
         return y_sol
 
+if __name__ == '__main__':
+    def alpha_t(t: float):
+        return 1 - 2 * t
+
+    def y_x(x: float):
+        return x + np.exp(x)
+
+
+    def f_x_t(x: float, t: float):
+        return 2 * np.exp(x)
+
+    def actual_solution(x: float, t: float):
+        return x - 2 * t + np.exp(x)
+
+    a = 2
+    m_arr = [100, 200, 400, 100, 100]
+    n_arr = [40, 80, 160, 80, 20]
+    v_arr = [0.8, 0.8, 0.8, 0.4, 1.6]
+    points = [10, 20, 40, 10, 10]
+
+    fig, ax = plt.subplots(len(m_arr))
+
+    for i in range(len(m_arr)):
+        solver = GridMethod(
+            a, m_arr[i], n_arr[i], v_arr[i], alpha_t, y_x, f_x_t
+        )
+
+        y_grid_method = solver.solve()
+
+        y_actual = np.zeros((solver.n + 1, solver.m + 1))
+        for j in range(solver.n + 1):
+            for k in range(solver.m + 1):
+                x = solver.x_interval[k]
+                t = solver.t_interval[j]
+                y_actual[j][k] = actual_solution(x, t)
+
+        ax[i].plot(solver.x_interval, y_actual[-1, :], color='red')
+        ax[i].plot(solver.x_interval, y_grid_method[-1, :], color='blue')
+
+    plt.show()
+
+
