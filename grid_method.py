@@ -47,9 +47,11 @@ class GridMethod:
 
         return y_sol
 
+
 if __name__ == '__main__':
     def alpha_t(t: float):
         return 1 - 2 * t
+
 
     def y_x(x: float):
         return x + np.exp(x)
@@ -58,8 +60,10 @@ if __name__ == '__main__':
     def f_x_t(x: float, t: float):
         return 2 * np.exp(x)
 
+
     def actual_solution(x: float, t: float):
         return x - 2 * t + np.exp(x)
+
 
     a = 2
     m_arr = [100, 200, 400, 100, 100]
@@ -87,5 +91,3 @@ if __name__ == '__main__':
         ax[i].plot(solver.x_interval, y_grid_method[-1, :], color='blue')
 
     plt.show()
-
-
