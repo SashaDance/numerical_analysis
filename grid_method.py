@@ -75,6 +75,11 @@ if __name__ == '__main__':
 
     fig, ax = plt.subplots(2)
 
+    # overwriting the files
+    sys.stdout = open('data/grid_method_1.txt', 'w')
+    print()
+    sys.stdout = open('data/grid_method_2.txt', 'w')
+    print()
     # first plot
     for i in range(len(m_arr)):
         solver = GridMethod(
