@@ -2,6 +2,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 from typing import Callable
 import pandas as pd
+import sys
 
 
 class GridMethod:
@@ -100,8 +101,9 @@ if __name__ == '__main__':
             'y_actual': y_act,
             'diff': [a - b for a, b in zip(y_act, y_grid)]
         })
+        sys.stdout = open('data/grid_method_1.txt', 'a')
         print(f'M={m_arr[i]}, N={n_arr[i]}, mu={v_arr[i]}')
-        print(df)
+        print(df, '\n')
 
         ax[0].plot(
             solver.x_interval, y_grid_method[-1, :],
@@ -143,8 +145,9 @@ if __name__ == '__main__':
             'y_actual': y_act,
             'diff': [a - b for a, b in zip(y_act, y_grid)]
         })
+        sys.stdout = open('data/grid_method_2.txt', 'a')
         print(f'M={m_arr[i]}, N={n_arr[i]}, mu={v_arr[i]}')
-        print(df)
+        print(df, '\n')
 
         ax[1].plot(
             solver.x_interval, y_grid_method[-1, :],
