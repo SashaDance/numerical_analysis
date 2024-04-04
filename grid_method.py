@@ -71,23 +71,33 @@ if __name__ == '__main__':
     v_arr = [0.8, 0.8, 0.8, 0.4, 1.6]
     points = [10, 20, 40, 10, 10]
 
-    fig, ax = plt.subplots(len(m_arr))
+    fig, ax = plt.subplots(2)
 
-    for i in range(len(m_arr)):
+    for i in range(3):
         solver = GridMethod(
             a, m_arr[i], n_arr[i], v_arr[i], alpha_t, y_x, f_x_t
         )
 
         y_grid_method = solver.solve()
 
-        y_actual = np.zeros((solver.n + 1, solver.m + 1))
-        for j in range(solver.n + 1):
-            for k in range(solver.m + 1):
-                x = solver.x_interval[k]
-                t = solver.t_interval[j]
-                y_actual[j][k] = actual_solution(x, t)
+        ax[0].plot(
+            solver.x_interval, y_grid_method[-1, :],
+            label=f'M={m_arr[i]}, N={n_arr[i]}, mu={v_arr[i]}'
+        )
 
-        ax[i].plot(solver.x_interval, y_actual[-1, :], color='red')
-        ax[i].plot(solver.x_interval, y_grid_method[-1, :], color='blue')
+    y_actual = np.zeros((solver.n + 1, solver.m + 1))
+    for j in range(solver.n + 1):
+        for k in range(solver.m + 1):
+            x = solver.x_interval[k]
+            t = solver.t_interval[j]
+            y_actual[j][k] = actual_solution(x, t)
 
+    ax[0].plot(
+        solver.x_interval, y_actual[-1, :],
+        label='Actual solution'
+    )
+
+    ax[0].legend()
     plt.show()
+
+# TODO: 1, 2, 3 on same graph + 1, 4, 5 on same graph; legends
