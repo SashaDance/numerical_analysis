@@ -1,6 +1,7 @@
 import numpy as np
 import matplotlib.pyplot as plt
 from typing import Callable
+import pandas as pd
 
 
 class GridMethod:
@@ -81,17 +82,31 @@ if __name__ == '__main__':
 
         y_grid_method = solver.solve()
 
+        y_actual = np.zeros((solver.n + 1, solver.m + 1))
+        x_arr = np.arange(0, 1 + 0.1, 0.1)
+        for j in range(solver.n + 1):
+            for k in range(solver.m + 1):
+                x = solver.x_interval[k]
+                t = solver.t_interval[j]
+                y_actual[j][k] = actual_solution(x, t)
+
+        y_grid = y_grid_method[-1:, ::solver.m // 10][0]
+        y_act = y_actual[-1:, ::solver.m // 10][0]
+
+        # printing results
+        df = pd.DataFrame({
+            'x': x_arr,
+            'y_numerical': y_grid,
+            'y_actual': y_act,
+            'diff': [a - b for a, b in zip(y_act, y_grid)]
+        })
+        print(f'M={m_arr[i]}, N={n_arr[i]}, mu={v_arr[i]}')
+        print(df)
+
         ax[0].plot(
             solver.x_interval, y_grid_method[-1, :],
             label=f'M={m_arr[i]}, N={n_arr[i]}, mu={v_arr[i]}'
         )
-
-    y_actual = np.zeros((solver.n + 1, solver.m + 1))
-    for j in range(solver.n + 1):
-        for k in range(solver.m + 1):
-            x = solver.x_interval[k]
-            t = solver.t_interval[j]
-            y_actual[j][k] = actual_solution(x, t)
 
     ax[0].plot(
         solver.x_interval, y_actual[-1, :],
@@ -110,17 +125,31 @@ if __name__ == '__main__':
 
         y_grid_method = solver.solve()
 
+        y_actual = np.zeros((solver.n + 1, solver.m + 1))
+        x_arr = np.arange(0, 1 + 0.1, 0.1)
+        for j in range(solver.n + 1):
+            for k in range(solver.m + 1):
+                x = solver.x_interval[k]
+                t = solver.t_interval[j]
+                y_actual[j][k] = actual_solution(x, t)
+
+        y_grid = y_grid_method[-1:, ::solver.m // 10][0]
+        y_act = y_actual[-1:, ::solver.m // 10][0]
+
+        # printing results
+        df = pd.DataFrame({
+            'x': x_arr,
+            'y_numerical': y_grid,
+            'y_actual': y_act,
+            'diff': [a - b for a, b in zip(y_act, y_grid)]
+        })
+        print(f'M={m_arr[i]}, N={n_arr[i]}, mu={v_arr[i]}')
+        print(df)
+
         ax[1].plot(
             solver.x_interval, y_grid_method[-1, :],
             label=f'M={m_arr[i]}, N={n_arr[i]}, mu={v_arr[i]}'
         )
-
-    y_actual = np.zeros((solver.n + 1, solver.m + 1))
-    for j in range(solver.n + 1):
-        for k in range(solver.m + 1):
-            x = solver.x_interval[k]
-            t = solver.t_interval[j]
-            y_actual[j][k] = actual_solution(x, t)
 
     ax[1].plot(
         solver.x_interval, y_actual[-1, :],
@@ -129,6 +158,8 @@ if __name__ == '__main__':
 
     ax[0].legend()
     ax[1].legend()
+    ax[0].grid()
+    ax[1].grid()
+
     plt.show()
 
-# TODO: 1, 2, 3 on same graph + 1, 4, 5 on same graph; legends
