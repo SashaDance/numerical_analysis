@@ -166,6 +166,8 @@ if __name__ == '__main__':
 
     ax[0].legend()
     ax[1].legend()
+    ax[0].set_title('Task 1')
+    ax[1].set_title('Task 2')
     ax[0].grid()
     ax[1].grid()
 
