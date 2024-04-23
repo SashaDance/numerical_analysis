@@ -1,10 +1,13 @@
-
 class BinaryHeap:
-    def __init__(self, init_arr: list[int]):
+    def __init__(self, init_arr: list[int] = None):
         self.heap = []
         self.heap_size = 0
-        for i in range(len(init_arr)):
-            self.add(init_arr[i])
+        if init_arr is not None:
+            for i in range(len(init_arr)):
+                self.add(init_arr[i])
+
+    def __call__(self) -> list[int]:
+        return self.heap
 
     def swap(self, i: int, j: int) -> None:
         dummy = self.heap[i]
@@ -39,7 +42,16 @@ class BinaryHeap:
     def extract_min(self) -> int:
         min_elem = self.heap[0]
         self.heap[0] = self.heap[self.heap_size - 1]
+        self.heap.remove(self.heap_size - 1)
         self.heap_size -= 1
         self.sift_down(0)
 
         return min_elem
+
+
+if __name__ == '__main__':
+    test_ar = [1, 4, 11, 15, 2]
+    heap = BinaryHeap(test_ar)
+    print(heap())
+    heap.extract_min()
+    print(heap())
