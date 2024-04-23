@@ -42,7 +42,7 @@ class BinaryHeap:
     def extract_min(self) -> int:
         min_elem = self.heap[0]
         self.heap[0] = self.heap[self.heap_size - 1]
-        self.heap.remove(self.heap_size - 1)
+        self.heap.pop(self.heap_size - 1)
         self.heap_size -= 1
         self.sift_down(0)
 
