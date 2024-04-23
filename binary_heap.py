@@ -1,8 +1,10 @@
 
 class BinaryHeap:
     def __init__(self, init_arr: list[int]):
-        self.heap = init_arr.copy()
-        self.heap_size = len(self.heap)
+        self.heap = []
+        self.heap_size = 0
+        for i in range(len(init_arr)):
+            self.add(init_arr[i])
 
     def swap(self, i: int, j: int) -> None:
         dummy = self.heap[i]
@@ -41,4 +43,3 @@ class BinaryHeap:
         self.sift_down(0)
 
         return min_elem
-
