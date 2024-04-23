@@ -4,6 +4,7 @@ class BinaryHeap:
         self.heap_size = 0
         if init_arr is not None:
             for i in range(len(init_arr)):
+                print(self.heap)
                 self.add(init_arr[i])
 
     def __call__(self) -> list[int]:
@@ -15,7 +16,7 @@ class BinaryHeap:
         self.heap[j] = dummy
 
     def sift_up(self, i: int) -> None:
-        while self.heap[i] < self.heap[(i - 1) // 2]:
+        while i >= 1 and self.heap[i] < self.heap[(i - 1) // 2]:
             self.swap(i, (i - 1) // 2)
             i = (i - 1) // 2
 
@@ -50,7 +51,7 @@ class BinaryHeap:
 
 
 if __name__ == '__main__':
-    test_ar = [1, 4, 11, 15, 2]
+    test_ar = [4, 5, 8, 2]
     heap = BinaryHeap(test_ar)
     print(heap())
     heap.extract_min()
