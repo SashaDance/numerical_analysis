@@ -48,4 +48,8 @@ f = [-2, 38, 11, 6]
 inst = ThomasAlg(matrix, f)
 solution = inst.solve()
 
-print(f'Solution:\n{solution}')
+
+if __name__ == '__main__':
+    print('Solution:')
+    for i in range(len(solution)):
+        print(f'x_{i} = {solution[i]}')

@@ -73,7 +73,7 @@ if __name__ == '__main__':
     v_arr = [0.8, 0.8, 0.8]
     points = [10, 20, 40]
 
-    fig, ax = plt.subplots(2)
+    fig, ax = plt.subplots(2, figsize=(10, 10))
 
     # overwriting the files
     sys.stdout = open('data/grid_method_1.txt', 'w')
