@@ -2,7 +2,7 @@ import numpy as np
 
 
 class ThomasAlg():
-    def __init__(self, matrix: list[list[float]], f: list[float]):
+    def __init__(self, matrix: list[float], f: list[float]):
         self.matrix = matrix
         self.f = f
         self.n = len(f)
