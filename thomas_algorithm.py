@@ -22,7 +22,7 @@ class ThomasAlg():
                 -self.c[i] / (self.alphas[i - 1] * self.a[i - 1] + self.b[i])
             )
             self.betas.append(
-                (f[i] - self.a[i - 1] * self.betas[i - 1])
+                (self.f[i] - self.a[i - 1] * self.betas[i - 1])
                 / (self.a[i - 1] * self.alphas[i - 1] + self.b[i])
             )
 
@@ -36,20 +36,17 @@ class ThomasAlg():
 
         return ans
 
-
-matrix = [
-    2, -1, 0, 0,
-    1, 15, -2, 0,
-    0, -1, 3, 1,
-    0, 0, 1, 1
-]
-f = [-2, 38, 11, 6]
-
-inst = ThomasAlg(matrix, f)
-solution = inst.solve()
-
-
 if __name__ == '__main__':
+    matrix = [
+        2, -1, 0, 0,
+        1, 15, -2, 0,
+        0, -1, 3, 1,
+        0, 0, 1, 1
+    ]
+    f = [-2, 38, 11, 6]
+
+    inst = ThomasAlg(matrix, f)
+    solution = inst.solve()
     print('Solution:')
     for i in range(len(solution)):
         print(f'x_{i} = {solution[i]}')
