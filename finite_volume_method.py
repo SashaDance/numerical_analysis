@@ -1,5 +1,4 @@
-import scipy.integrate as integrate
-import scipy
+import pandas as pd
 import numpy as np
 from tqdm import tqdm
 from thomas_algorithm import ThomasAlg
@@ -33,7 +32,6 @@ class FVMSolver:
             self.dt * i for i in range(round(self.T / self.L) * self.m + 1)
         ]
         self.current_u = []
-        print(self.x, self.t, sep='\n')
 
     def __get_coefs(self, i: int, t: float) -> tuple[float, float, float, float]:
         if i == 0:
@@ -55,11 +53,8 @@ class FVMSolver:
             )
         a_0 = self.p(self.x[i]) * self.dx / self.dt
         b = a + c + a_0
-        s_c = integrate.quad(
-            lambda x: self.s(x, t),
-            self.x_edges[i], self.x_edges[i + 1]
-        )[0] / self.dx
-        u_ = self.current_u[i + 1] if i < (self.m - 1) else self.beta(t)
+        s_c = self.s(self.x[i], t)
+        u_ = self.current_u[i] if i < (self.m - 1) else self.beta(t)
         d = s_c * self.dx + a_0 * u_
 
         return a, b, c, d
@@ -90,31 +85,37 @@ class FVMSolver:
             # updating u on current time step
             self.current_u = solver_system.solve()
 
-        print(self.current_u)
         return self.current_u
 
 
 if __name__ == '__main__':
-    solver = FVMSolver(
-        right_edge=1, time=3,
-        p=lambda x: 1,
-        lamb=lambda x: 1 / 6,
-        s=lambda x, t: 4 * x * (x ** 2 - 1) * np.exp(t),
-        phi=lambda x: 4 * (x ** 3),
-        alpha=lambda t: 0,
-        beta=lambda t: 4 * np.exp(t),
-        m=1000
-    )
-    # solver = FVMSolver(
-    #     right_edge=1, time=3,
-    #     p=lambda x: 1,
-    #     lamb=lambda x: 1,
-    #     s=lambda x, t: np.sin(x) - 2 * np.exp(x - t),
-    #     phi=lambda x: np.sin(x) + np.exp(x),
-    #     alpha=lambda t: np.exp(-t),
-    #     beta=lambda t: np.sin(1) + np.exp(1 - t),
-    #     m=125
-    # )
-    solver.solve()
-    # print([np.sin(x) + np.exp(x - 3) for x in solver.x])
-    print([4 * (x ** 3) * np.exp(3) for x in solver.x])
+    params = {
+        'right_edge': 1,
+        'time': 3,
+        'p': lambda x: 1,
+        'lamb': lambda x: 1 / 6,
+        's': lambda x, t: 4 * x * (x ** 2 - 1) * np.exp(t),
+        'phi': lambda x: 4 * (x ** 3),
+        'alpha': lambda t: 0,
+        'beta': lambda t: 4 * np.exp(t),
+    }
+    m_set = [25, 125, 625]
+    print_sets = [
+        [0 + i for i in range(25)],
+        [2 + 5 * i for i in range(25)],
+        [12 + 25 * i for i in range(25)]
+    ]
+    for m, print_set in zip(m_set, print_sets):
+        solver = FVMSolver(**params, m=m)
+        solution = solver.solve()
+        data = pd.DataFrame(columns=['x', 'u numerical', 'u actual', 'residue'])
+        x_arr = solver.x
+        x_arr = [0] + [x_arr[i] for i in range(len(x_arr)) if i in print_set] + [1]
+        data['x'] = x_arr
+        u_numerical = solution
+        u_numerical = [solver.alpha(3)] + [u_numerical[i] for i in range(len(u_numerical)) if i in print_set] + [solver.beta(3)]
+        data['u numerical'] = u_numerical
+        data['u actual'] = [4 * (x ** 3) * np.exp(3) for x in data['x']]
+        data['residue'] = data['u numerical'] - data['u actual']
+        data.index = [0] + print_set + [m - 1]
+        print(data)
