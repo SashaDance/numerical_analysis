@@ -1,5 +1,7 @@
 import pandas as pd
 import numpy as np
+import seaborn as sns
+import matplotlib.pyplot as plt
 from tqdm import tqdm
 from thomas_algorithm import ThomasAlg
 from typing import Callable
@@ -97,7 +99,7 @@ if __name__ == '__main__':
         's': lambda x, t: 4 * x * (x ** 2 - 1) * np.exp(t),
         'phi': lambda x: 4 * (x ** 3),
         'alpha': lambda t: 0,
-        'beta': lambda t: 4 * np.exp(t),
+        'beta': lambda t: 4 * np.exp(t)
     }
     m_set = [25, 125, 625]
     print_sets = [
@@ -105,6 +107,7 @@ if __name__ == '__main__':
         [2 + 5 * i for i in range(25)],
         [12 + 25 * i for i in range(25)]
     ]
+    fig, ax = plt.subplots()
     for m, print_set in zip(m_set, print_sets):
         solver = FVMSolver(**params, m=m)
         solution = solver.solve()
@@ -113,9 +116,18 @@ if __name__ == '__main__':
         x_arr = [0] + [x_arr[i] for i in range(len(x_arr)) if i in print_set] + [1]
         data['x'] = x_arr
         u_numerical = solution
-        u_numerical = [solver.alpha(3)] + [u_numerical[i] for i in range(len(u_numerical)) if i in print_set] + [solver.beta(3)]
+        u_numerical = (
+            [solver.alpha(3)]
+            + [u_numerical[i] for i in range(len(u_numerical)) if i in print_set]
+            + [solver.beta(3)]
+        )
         data['u numerical'] = u_numerical
         data['u actual'] = [4 * (x ** 3) * np.exp(3) for x in data['x']]
         data['residue'] = data['u numerical'] - data['u actual']
-        data.index = [0] + print_set + [m - 1]
+        sns.lineplot(x=data['x'], y=data['u numerical'], label=f'Numerical solution m={m}', ax=ax)
         print(data)
+    sns.lineplot(x=data['x'], y=data['u actual'], label=f'Actual solution', ax=ax)
+    plt.xlabel('x')
+    plt.ylabel('u')
+    plt.legend()
+    plt.show()
