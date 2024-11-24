@@ -55,7 +55,7 @@ class FVMSolver:
         a_0 = self.p(self.x[i]) * self.dx / self.dt
         b = a + c + a_0
         s_c = self.s(self.x[i], t)
-        u_ = self.current_u[i] if i < (self.m - 1) else self.beta(t)
+        u_ = self.current_u[i]
         d = s_c * self.dx + a_0 * u_
 
         return a, b, c, d
@@ -123,7 +123,7 @@ if __name__ == '__main__':
         )
         data['u numerical'] = u_numerical
         data['u actual'] = [actual_solution(x, 3) for x in data['x']]
-        data['residue'] = data['u numerical'] - data['u actual']
+        data['residue'] = data['u actual'] - data['u numerical']
         sns.lineplot(x=data['x'], y=data['u numerical'], label=f'Numerical solution m={m}', ax=ax)
         print(f'm={m}')
         print(data)
