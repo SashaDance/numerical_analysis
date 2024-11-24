@@ -2,7 +2,6 @@ import pandas as pd
 import numpy as np
 import seaborn as sns
 import matplotlib.pyplot as plt
-from tqdm import tqdm
 from thomas_algorithm import ThomasAlg
 from typing import Callable
 
@@ -65,7 +64,7 @@ class FVMSolver:
         # initializing with start condition
         self.current_u = [self.phi(x) for x in self.x]
         # edge conditions
-        for cur_t in tqdm(self.t[1:]):
+        for cur_t in self.t[1:]:
             a, b, c, d = self.__get_coefs(0, cur_t)
             matrix = [[1, -c / b] + [0] * (self.m - 2)]
             right_sight = [d / b + a * self.alpha(cur_t) / b]
@@ -95,11 +94,11 @@ if __name__ == '__main__':
         'right_edge': 1,
         'time': 3,
         'p': lambda x: 1,
-        'lamb': lambda x: 1 / 6,
-        's': lambda x, t: 4 * x * (x ** 2 - 1) * np.exp(t),
-        'phi': lambda x: 4 * (x ** 3),
-        'alpha': lambda t: 0,
-        'beta': lambda t: 4 * np.exp(t)
+        'lamb': lambda x: 1 / 2,
+        's': lambda x, t: np.exp(x + t) / 2,
+        'phi': lambda x: np.exp(x),
+        'alpha': lambda t: np.exp(t),
+        'beta': lambda t: np.exp(1 + t)
     }
     m_set = [25, 125, 625]
     print_sets = [
@@ -108,6 +107,7 @@ if __name__ == '__main__':
         [12 + 25 * i for i in range(25)]
     ]
     fig, ax = plt.subplots()
+    actual_solution = lambda x, t: np.exp(x + t)
     for m, print_set in zip(m_set, print_sets):
         solver = FVMSolver(**params, m=m)
         solution = solver.solve()
@@ -122,12 +122,14 @@ if __name__ == '__main__':
             + [solver.beta(3)]
         )
         data['u numerical'] = u_numerical
-        data['u actual'] = [4 * (x ** 3) * np.exp(3) for x in data['x']]
+        data['u actual'] = [actual_solution(x, 3) for x in data['x']]
         data['residue'] = data['u numerical'] - data['u actual']
         sns.lineplot(x=data['x'], y=data['u numerical'], label=f'Numerical solution m={m}', ax=ax)
+        print(f'm={m}')
         print(data)
     sns.lineplot(x=data['x'], y=data['u actual'], label=f'Actual solution', ax=ax)
     plt.xlabel('x')
     plt.ylabel('u')
     plt.legend()
     plt.show()
+print()
